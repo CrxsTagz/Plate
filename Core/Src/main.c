@@ -1,22 +1,4 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
+
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -68,7 +50,7 @@ int i = 0;
 HAL_UART_Transmit(&huart2, "Puntuacion: ", 12, HAL_MAX_DELAY);
 */
 int cont = 0;
-HAL_UART_Transmit(&huart2, "\r-\t-\t-\t-\t-\t-\t-\t*\t-\t-\t\n", 23, HAL_MAX_DELAY);
+HAL_UART_Transmit(&huart2, "\r_\t_\t_\t_\t_\t_\t_\t*\t_\t_\t\n", 23, HAL_MAX_DELAY);
 HAL_UART_Transmit(&huart2, "\r@", 2, HAL_MAX_DELAY);
 cont++;
 HAL_Delay(time);
@@ -167,6 +149,10 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Infinite loop */
+
+  uint8_t enter = " ";
+
+  HAL_UART_Receive_IT(&huart1, enter, 1);
 
   plate(500,25);
   /* USER CODE BEGIN WHILE */
@@ -329,14 +315,9 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	__NOP();
-}
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
 	__NOP();
 }
 
