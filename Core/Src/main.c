@@ -43,9 +43,9 @@ void plate(int time, int rounds){
 int i = 0;
 
 
-HAL_UART_Transmit(&huart2, "Tiro: ", 6 , HAL_MAX_DELAY);
+/*HAL_UART_Transmit(&huart2, "Tiro: ", 6 , HAL_MAX_DELAY);
 HAL_UART_Transmit(&huart2, "Puntuacion: ", 12, HAL_MAX_DELAY);
-
+*/
 int cont = 0;
 HAL_UART_Transmit(&huart2, "\r-\t-\t-\t-\t-\t-\t-\t*\t-\t-\t\n", 23, HAL_MAX_DELAY);
 HAL_UART_Transmit(&huart2, "\r@", 2, HAL_MAX_DELAY);
@@ -124,7 +124,8 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -143,10 +144,25 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+  uint8_t enter = 0 ;
+
+  HAL_UART_Receive_IT(&huart2, enter, 1);
+
+uint8_t GPIO_Pin;
+	  if(GPIO_Pin == B1_Pin)
+
+	  		HAL_GPIO_TogglePin (LD2_GPIO_Port, LD2_Pin);
+
+	  	else
+	  	{
+	  		   __NOP ();
+	  	}
+
+
 
   plate(500, 25);
 
-  //HAL_UART_Receive_IT(&huart2, /*13*/, /*1*/);
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -277,6 +293,7 @@ static void MX_GPIO_Init(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	__NOP();
+	HAL_UART_Transmit(&huart2, "\nKLK MMG", 8, HAL_MAX_DELAY);
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
