@@ -40,154 +40,199 @@ static void MX_USART2_UART_Init(void);
 
 
 
+/*
+ * Setting the plate velocity with the Dip-Switch
+ *
+ */
+
 int gameplay()
 {
+
+	//velocity variable.
+
 	int velocity = 0;
 
-
-
-	if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10))
+	if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)) //First Switch
 
 	{
-	    if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3))
+	    if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3)) //Second Switch
 
 	    {
 
-	        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5))
+	        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5)) //Thrid Switch
 
 	        {
-	            velocity = 200;
+	            velocity = 500; //Super Fast
 
 	        }
 	        else
 	        {
-	        	velocity = 1000;
+	        	velocity = 1000; //Fast
 	        }
 	    }
 
 	  else
 
 	    {
-	        velocity = 3000;
+	        velocity = 1500; //Medium
 	    }
 	}
 
 	  else
 	  {
 
-		velocity = 5000;
+		velocity = 2000; //Slow
 	  }
 
-
-
-	/*while(1)
-	{
-
-		HAL_UART_Receive(&huart2, num , 1, HAL_MAX_DELAY);
-
-		if(num == 13)
-		{
-			break;
-		}
-	}*/
-
-
-	return velocity;
+	return velocity; //Variable Exit
 }
+
+
+/*
+ * Setting the shooting configuration (amount of shots the players can make)
+ */
 
 int shoot()
 {
+	//Shooting variable
+
 	int shoot = 0;
+
 	//available shots
-		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4))
+
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4)) //Fourth Switch (levels)
 		{
-			shoot = 11;
+			shoot = 11; //If it's DOWN
 		}
 		else
 		{
-			shoot = 25;
+			shoot = 25; //If it's UP
 		}
 
-		return shoot;
+		return shoot; //Variable Exit
 
 }
-void plate(int time, int rounds){
-
-int i = 0;
 
 
-/*HAL_UART_Transmit(&huart2, "Tiro: ", 6 , HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "Puntuacion: ", 12, HAL_MAX_DELAY);
-*/
+/*
+ * Plate and underscores printing
+ */
+
+int plate(int time, int rounds, int score){
+
+//Counter variable / Plate position marker
+
 int cont = 0;
-HAL_UART_Transmit(&huart2, "\r_\t_\t_\t_\t_\t_\t_\t*\t_\t_\t\n", 23, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r@", 2, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, " ",  1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t@",2, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t ", 2, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t@", 3, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t ", 3, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t@", 4, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t ", 4, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t@",5, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t ", 5, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t@", 6, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t ", 6, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t@", 7, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t ", 7, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t@", 8, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t ", 8, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t@", 9, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t ", 9, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t@", 10, HAL_MAX_DELAY);
-cont++;
-HAL_Delay(time);
-HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
-HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t ", 10, HAL_MAX_DELAY);
+
+//Space buffer
+
+char buffspace;
+
+//Loop till level selected
+
+for(int i = 1; i <= rounds; i++)
+{
+
+	/*
+	 * BUFFER VARIABLES: These buffers help to store the ASCII values of the integers
+	 */
+
+	char buffrounds[16];
+	char buffi[16];
+	char buffpoints[16];
+
+	/*
+	 * "Tiro" Transmission
+	 * */
+	HAL_UART_Transmit(&huart2, "\n\rTiro: ", 8 , HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, buffi,sprintf(buffi,"%d",i), 500);
+	HAL_UART_Transmit(&huart2, " de ", 4 , HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, buffrounds, sprintf(buffrounds,"%d",rounds), 500);
+	HAL_UART_Transmit(&huart2, "\n", 1 , HAL_MAX_DELAY);
+
+
+	/*
+	 * "Puntuacion" Transmission
+	 * */
+	HAL_UART_Transmit(&huart2, "\rPuntuacion: ", 13, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, buffpoints, sprintf(buffpoints,"%02d",score), 500);
+	HAL_UART_Transmit(&huart2, "\n", 1 , HAL_MAX_DELAY);
+
+	/*
+	 * Rail and Plate Transmission // 'Space' key to start printing
+	 * */
+	HAL_UART_Transmit(&huart2, "\r_\t_\t_\t_\t_\t_\t_\t*\t_\t_\t\n", 24, HAL_MAX_DELAY);
+
+	HAL_UART_Receive(&huart2, buffspace , 1, HAL_MAX_DELAY); //'SPACE' receiver
+
+	HAL_UART_Transmit(&huart2, "\r@", 2, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, " ",  1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t@",2, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t ", 2, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t@", 3, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t ", 3, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t@", 4, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t ", 4, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t@",5, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t ", 5, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t@", 6, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t ", 6, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t@", 7, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t ", 7, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t@", 8, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t ", 8, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t@", 9, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t ", 9, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t@", 10, HAL_MAX_DELAY);
+	cont++;
+	HAL_Delay(time);
+	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t ", 10, HAL_MAX_DELAY);
+}
+
+	//Cont exit
+	return cont; //check later
+
 }
 
 /* USER CODE END 0 */
 
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -198,7 +243,9 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -215,16 +262,31 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  /*
+   * Function variable receivers for init
+   * */
   int velocity_1;
   int shoot_1;
-  char num = "a";
+  char num = "a"; //'ENTER' key buffer
+  int score_1 = 0;
 
+  /*
+   * Welcome Message
+   * */
+  HAL_UART_Transmit(&huart2, "\n\rBienvenido a tiro al plato!\n", 28 , HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart2, "\n\rConfigure la velocidad y el nivel utilizando el dip-switch de cuatro posiciones.\n", 82 , HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart2, "\n\rCuando esté listo, presione ENTER para comenzar!\n ", 52 , HAL_MAX_DELAY);
+
+  //Initialization of the functions
   velocity_1 = gameplay();
   shoot_1 = shoot();
 
-  HAL_UART_Receive(&huart2, num , 1, HAL_MAX_DELAY);
 
-  plate(velocity_1,shoot_1);
+  HAL_UART_Receive(&huart2, num , 1, HAL_MAX_DELAY); //ENTER receiver
+
+
+  plate(velocity_1,shoot_1, score_1); //GAME EXECUTION
 
   /* USER CODE END 2 */
 
