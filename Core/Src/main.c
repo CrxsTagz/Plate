@@ -1,39 +1,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-/* USER CODE END PD */
 
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
+	uint8_t IT[1] ={0}; //Interruption
+	uint8_t brk= 0;    // Break validation
 
-/* USER CODE END PM */
+	//Counter variable / Plate position marker
+	int cont = 0;
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
@@ -120,10 +102,6 @@ int shoot()
 
 int plate(int time, int rounds, int score){
 
-//Counter variable / Plate position marker
-
-int cont = 0;
-
 //Space buffer
 
 char buffspace;
@@ -159,7 +137,7 @@ for(int i = 1; i <= rounds; i++)
 	HAL_UART_Transmit(&huart2, "\n", 1 , HAL_MAX_DELAY);
 
 	/*
-	 * Rail and Plate Transmission // 'Space' key to start printing
+	 * Rail and Plate Transmission // 'Space' key to start printing plus the interruption validations
 	 * */
 	HAL_UART_Transmit(&huart2, "\r_\t_\t_\t_\t_\t_\t_\t*\t_\t_\t\n", 24, HAL_MAX_DELAY);
 
@@ -167,67 +145,174 @@ for(int i = 1; i <= rounds; i++)
 
 	HAL_UART_Transmit(&huart2, "\r@", 2, HAL_MAX_DELAY);
 	cont++;
+	if(brk != 0)
+	{
+	  brk = 0;
+	  break;
+	}
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, " ",  1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t@",2, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t ", 2, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t@", 3, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t ", 3, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t@", 4, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t ", 4, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t@",5, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t ", 5, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t@", 6, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t ", 6, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t@", 7, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t ", 7, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t@", 8, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t ", 8, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t@", 9, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t ", 9, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t@", 10, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	cont++;
+	if(brk != 0)
+		{
+		  brk = 0;
+		  break;
+		}
+	HAL_UART_Receive_IT (&huart2, IT, 1);
 	HAL_Delay(time);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 	HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t ", 10, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT (&huart2, IT, 1); //Interrupt
 }
 
-	//Cont exit
-	return cont; //check later
+
 
 }
 
@@ -235,16 +320,10 @@ for(int i = 1; i <= rounds; i++)
 
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-
-
-  /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
-
 	HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -297,8 +376,171 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
+
   }
   /* USER CODE END 3 */
+
+
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	int puntuacion; //Score variable (LITERALLY!!!)
+
+	  if(cont == 8)
+	  {
+
+		puntuacion++;
+
+	    for(int i = 0; i<=4; i++)
+	    {
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t ", 8, HAL_MAX_DELAY);
+		HAL_Delay(500);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t@", 8, HAL_MAX_DELAY);
+	    }
+
+	  }
+
+	  else if (cont == 1)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, " ",  1, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "@", 1, HAL_MAX_DELAY);
+	    }
+
+	  }
+
+	  else if (cont == 2)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t ",  2, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t@", 2, HAL_MAX_DELAY);
+	    }
+
+	  }
+
+	  else if (cont == 3)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t ",  3, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t@", 3, HAL_MAX_DELAY);
+	    }
+
+	  }
+
+	  else if (cont == 4)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t ",  4, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t@", 4, HAL_MAX_DELAY);
+
+	    }
+	  }
+
+	  else if (cont == 5)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t ",  5, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t@", 5, HAL_MAX_DELAY);
+
+	    }
+
+	  }
+
+	  else if (cont == 6)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t ",  6, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t@", 6, HAL_MAX_DELAY);
+
+	    }
+	  }
+
+	  else if (cont == 7)
+	  {
+
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t ",  7, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t@", 7, HAL_MAX_DELAY);
+
+	    }
+	  }
+
+	  else if (cont == 9)
+	  {
+	    for(int i = 0; i<=4; i++)
+	    {
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t ",  9, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t@", 9, HAL_MAX_DELAY);
+	    }
+	  }
+	 else
+	  {
+	    for(int i = 0; i<=4; i++)
+	    {
+
+	    HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t ",  10, HAL_MAX_DELAY);
+		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, "\r", 1, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, "\t\t\t\t\t\t\t\t\t@",10, HAL_MAX_DELAY);
+
+	    }
+	  }
+		//brk++;
+
+		if(puntuacion >= 8)
+		{
+			__NOP();
+		}
 }
 
 /**
@@ -412,11 +654,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-
-	__NOP();
-}
 
 /* USER CODE END 4 */
 
